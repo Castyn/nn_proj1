@@ -99,48 +99,52 @@ class NeuralNetwork(object):
         # output_error_term = error * output * (1-output)
         # hidden_error = np.dot(output_error_term, weights_hidden_output)
         # hidden_error_term = hidden_error * hidden_output * (1 - hidden_output)
+        # del_w_hidden_output += output_error_term * hidden_output
+        # del_w_input_hidden += hidden_error_term * x[:,None]
         
  
         
         # TODO: Output error - Replace this value with your calculations.
         error = y - final_outputs # Output layer error is the difference between desired target and actual output.
-        print("error: ", error) 
+        #print("error: ", error) 
         
         # TODO: Backpropagated error term - Replace these values with your calculations.
-        output_error_term = error * final_outputs * (1-final_outputs)
-        print("output_error_term: ", output_error_term) 
+        #output_error_term = error * final_outputs * (1-final_outputs)
+        output_error_term = error # removed final_outputs * (1-final_outputs) since we are linear instead of sigmoid
+
+        #print("output_error_term: ", output_error_term) 
 
         # TODO: Calculate the hidden layer's contribution to the error
         # print("output_error_term.shape: ",output_error_term.shape)
         # print("self.weights_hidden_to_output.T.shape: ",self.weights_hidden_to_output.T.shape)
         hidden_error = np.dot(output_error_term, self.weights_hidden_to_output.T)
-        print("hidden_error: ", hidden_error) 
+        #print("hidden_error: ", hidden_error) 
         
         # TODO: Backpropagated hidden error term - Replace these values with your calculations.
-        hidden_error_term = error * hidden_outputs * (1-hidden_outputs)
-        print("hidden_error_term: ", hidden_error_term) 
-        print("   hidden_outputs:", hidden_outputs)
+        hidden_error_term = hidden_error * hidden_outputs * (1-hidden_outputs)
+        #print("hidden_error_term: ", hidden_error_term) 
+        #print("   hidden_outputs:", hidden_outputs)
         
         # Weight step (input to hidden)
         delta_weights_i_h += hidden_error_term * X[:,None]
-        print("delta_weights_i_h: ", delta_weights_i_h) 
-        print("     hidden_error_term: ", hidden_error_term) 
-        print("     X[:,None]: ", X[:,None]) 
+        #print("delta_weights_i_h: ", delta_weights_i_h) 
+        #print("     hidden_error_term: ", hidden_error_term) 
+        #print("     X[:,None]: ", X[:,None]) 
         
         
         # Weight step (hidden to output)
-        print("output_error_term.shape: ",output_error_term.shape)
-        print("output_error_term[:,None].shape: ",output_error_term[:,None].shape)
-        print("output_error_term.T.shape: ",output_error_term.T.shape)
-        print("hidden_outputs.shape: ",hidden_outputs.shape)
-        print("hidden_outputs[:,None].shape: ",hidden_outputs[:,None].shape)
-        print("hidden_outputs.T.shape: ",hidden_outputs.T.shape)
-        print("delta_weights_h_o.shape: ",delta_weights_h_o.shape)
+        #print("output_error_term.shape: ",output_error_term.shape)
+        #print("output_error_term[:,None].shape: ",output_error_term[:,None].shape)
+        #print("output_error_term.T.shape: ",output_error_term.T.shape)
+        #print("hidden_outputs.shape: ",hidden_outputs.shape)
+        #print("hidden_outputs[:,None].shape: ",hidden_outputs[:,None].shape)
+        #print("hidden_outputs.T.shape: ",hidden_outputs.T.shape)
+        #print("delta_weights_h_o.shape: ",delta_weights_h_o.shape)
         delta_weights_h_o += hidden_outputs[:,None] * output_error_term
         
-        print("delta_weights_h_o: ", delta_weights_i_h) 
-        print("     hidden_outputs[:,None]: ", hidden_outputs[:,None]) 
-        print("     output_error_term: ", output_error_term) 
+        #print("delta_weights_h_o: ", delta_weights_i_h) 
+        #print("     hidden_outputs[:,None]: ", hidden_outputs[:,None]) 
+        #print("     output_error_term: ", output_error_term) 
         
         return delta_weights_i_h, delta_weights_h_o
 
@@ -155,9 +159,6 @@ class NeuralNetwork(object):
 
         '''
         ## From backprop lab code
-        # del_w_hidden_output += output_error_term * hidden_output
-        # del_w_input_hidden += hidden_error_term * x[:,None]
-
         # weights_input_hidden += learnrate * del_w_input_hidden / n_records
         # weights_hidden_output += learnrate * del_w_hidden_output / n_records
  
